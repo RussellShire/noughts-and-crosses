@@ -26,7 +26,7 @@
         }
     };
 </script>
-
+// test comment
 <template>
     <draggable v-model="items">
         <template v-slot:item="{item}">
