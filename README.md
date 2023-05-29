@@ -1,6 +1,13 @@
 # noughts-and-crosses
 
-This template should help get you started developing with Vue 3 in Vite.
+A noughts and crosses game implemented using HTML drag and drop API https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API 
+
+## Usage
+
+- npm run dev
+
+Commits
+- git config --global user.email "my.personal@email.com"
 
 ## Recommended IDE Setup
 
