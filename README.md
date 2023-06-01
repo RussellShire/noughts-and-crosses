@@ -2,6 +2,8 @@
 
 A noughts and crosses game implemented using HTML drag and drop API https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API 
 
+Following this guide: https://www.youtube.com/watch?v=-kZLD40d-tI&ab_channel=LearnVue 
+
 ## Usage
 
 - npm run dev

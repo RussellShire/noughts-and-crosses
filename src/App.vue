@@ -8,6 +8,7 @@
                 { id: 1, title: 'Item B', list: 1 },
                 { id: 2, title: 'Item C', list: 2 },
                 { id: 3, title: 'Item D', list: 2 },
+                { id: 4, title: 'Item E', list: 2 },
             ])
 
             const getList = (list) => {
@@ -57,7 +58,7 @@
             :key="item.id" 
             class="drag-el"
             draggable="true"
-            @dragStart="startDrag($event, item)" 
+            @dragstart="startDrag($event, item)" 
         >
             {{ item.title }}
         </div>
@@ -74,7 +75,7 @@
             :key="item.id" 
             class="drag-el"
             draggable="true"
-            @dragStart="startDrag($event, item)"
+            @dragstart="startDrag($event, item)"
         >
             {{ item.title }}
         </div>
