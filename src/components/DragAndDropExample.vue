@@ -4,8 +4,11 @@
     export default {
         setup () {
             const items = ref([
-                { id: 0, title: 'X', list: 1, draggble: true },
-                { id: 1, title: 'O', list: 1, draggble: true },
+                { id: 0, title: 'Item A', list: 1 },
+                { id: 1, title: 'Item B', list: 1 },
+                { id: 2, title: 'Item C', list: 2 },
+                { id: 3, title: 'Item D', list: 2 },
+                { id: 4, title: 'Item E', list: 2 },
             ])
 
             const getList = (list) => {
@@ -16,35 +19,22 @@
                 // console.log(item)
 
                 // specify we are moving, not duplicating an item
-                event.dataTransfer.dropEffect = 'copy'
-                event.dataTransfer.effectAllowed = 'copy'
+                event.dataTransfer.dropEffect = 'move'
+                event.dataTransfer.effectAllowed = 'move'
 
                 // tell drag and drop API what we're moving
                 event.dataTransfer.setData('itemID', item.id)
             }
 
             const onDrop = (event, list) => {
-                // check if list already has content and return if so
-                // ADD CHECK HERE
-                
                 // getting the id from the event datatransfer
                 const itemID = event.dataTransfer.getData('itemID')
 
                 //finding the item that matches 
                 const item = items.value.find((item) => item.id == itemID)
-                
-                // duplicating item
-                let newItem = {...item}
-                // changing id on duplicated item
-                newItem.id = items.value.length
-                // pushing duplicated into items
-                items.value.push(newItem)
-                
-                // changing the list dragged item belongs to
-                item.list = list
 
-                // stopping the dragged element being dragged again
-                item.draggble = false
+                // changing the list it belongs to
+                item.list = list
             }
 
             return {
@@ -58,8 +48,11 @@
 
 <template>
     <div 
+        class="drop-zone"
+        @drop="onDrop($event, 1)"
+        @dragenter.prevent
+        @dragover.prevent
     >
-    <h1>Grab your piece here</h1>
         <div 
             v-for="item in getList(1)" 
             :key="item.id" 
