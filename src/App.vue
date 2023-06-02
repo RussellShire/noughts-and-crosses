@@ -4,8 +4,8 @@
     export default {
         setup () {
             const items = ref([
-                { id: 0, title: 'X', list: 1, draggble: true },
-                { id: 1, title: 'O', list: 1, draggble: true },
+                { id: 0, title: 'X', list: 0 },
+                { id: 1, title: 'O', list: 0 },
             ])
 
             const getList = (list) => {
@@ -25,7 +25,6 @@
 
             const onDrop = (event, list) => {
                 // check if list already has content and return if so
-                // ADD CHECK HERE
                 if (items.value.find((item) => item.list == list)) {
                     console.log('there is already a piece here')
                     return
@@ -46,6 +45,29 @@
                 
                 // changing the list dragged item belongs to
                 item.list = list
+
+                checkVictory(item.title)
+            }
+
+            const checkVictory = (piece) => {
+                // console.log("Check Victory: ", piece)
+                // console.log(items.value)
+                const piecesInPlay = items.value.filter(item => item.title == piece && item.list != 0).map(item => item.list)
+                console.log(piecesInPlay)
+                const victoryConditions= [
+                    [1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7],
+                ]
+
+                victoryConditions.forEach(victoryCondition => {
+                    const victory = piecesInPlay.includes(victoryCondition[0] && victoryCondition[1] && victoryCondition[2])
+
+                    if (victory) {
+                        console.log("win")
+                        console.log("Victory condition: ", victoryCondition)
+                    } else {
+                        console.log("keep playing")
+                    }
+                })
             }
 
             return {
@@ -61,7 +83,7 @@
     <div class="piece-container">
         <h1>Grab your piece here</h1>
         <div 
-            v-for="item in getList(1)" 
+            v-for="item in getList(0)" 
             :key="item.id" 
             class="drag-el"
             draggable="true"
@@ -74,12 +96,12 @@
         <div v-for="n in 9">
             <div
                 class="grid-square"
-                @drop="onDrop($event, n + 1)"
+                @drop="onDrop($event, n)"
                 @dragenter.prevent
                 @dragover.prevent
             >
                 <div 
-                    v-for="item in getList(n + 1)" 
+                    v-for="item in getList(n)" 
                     :key="item.id" 
                     class="drag-el"
                     draggable="false"
@@ -124,5 +146,4 @@
     padding: 5px;
 
 }
-
 </style>
