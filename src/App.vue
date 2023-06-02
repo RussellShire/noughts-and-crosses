@@ -4,11 +4,11 @@
     export default {
         setup () {
             const items = ref([
-                { id: 0, title: 'Item A', list: 1 },
-                { id: 1, title: 'Item B', list: 1 },
-                { id: 2, title: 'Item C', list: 2 },
-                { id: 3, title: 'Item D', list: 2 },
-                { id: 4, title: 'Item E', list: 2 },
+                { id: '1', title: 'Item A', list: 1 },
+                { id: '2', title: 'Item B', list: 1 },
+                { id: '3', title: 'Item C', list: 2 },
+                { id: '4', title: 'Item D', list: 2 },
+                { id: '5', title: 'Item E', list: 2 },
             ])
 
             const getList = (list) => {
@@ -24,6 +24,7 @@
 
                 // tell drag and drop API what we're moving
                 event.dataTransfer.setData('itemID', item.id)
+                console.log(event.dataTransfer.getData('itemID'))
             }
 
             const onDrop = (event, list) => {
@@ -31,7 +32,7 @@
                 const itemID = event.dataTransfer.getData('itemID')
 
                 //finding the item that matches 
-                const item = items.value.find((item) => item.id = itemID)
+                const item = items.value.find((item) => item.id == itemID)
 
                 // changing the list it belongs to
                 item.list = list
