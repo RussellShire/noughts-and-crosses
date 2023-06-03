@@ -4,12 +4,12 @@
     export default {
         setup () {
             const items = ref([
-                { id: 0, title: 'X', list: 0 },
-                { id: 1, title: 'O', list: 0 },
+                { id: 0, title: 'X', location: 0 },
+                { id: 1, title: 'O', location: 0 },
             ])
 
-            const getList = (list) => {
-                return items.value.filter((item) => item.list == list)
+            const getLocation = (location) => {
+                return items.value.filter((item) => item.location == location)
             }
 
             const startDrag = (event, item) => {
@@ -21,9 +21,9 @@
                 event.dataTransfer.setData('itemID', item.id)
             }
 
-            const onDrop = (event, list) => {
-                // check if list already has content and return if so
-                if (items.value.find((item) => item.list == list)) {
+            const onDrop = (event, location) => {
+                // check if location already has content and return if so
+                if (items.value.find((item) => item.location == location)) {
                     alert('there is already a piece here')
                     return
                 }
@@ -41,19 +41,19 @@
                 // pushing duplicated into items
                 items.value.push(newItem)
                 
-                // changing the list dragged item belongs to
-                item.list = list
+                // changing the location dragged item belongs to
+                item.location = location
 
                 checkVictory(item.title)
             }
 
-            const checkVictory = (piece) => {
+            const checkVictory = ( currentTurnPiece ) => {
                 const victoryConditions= [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
 
                 // create an array of the squares where the piece in play sits
                 const piecesInPlay = items.value
-                    .filter(item => item.title == piece && item.list != 0)
-                    .map(item => item.list)
+                    .filter(item => item.title == currentTurnPiece && item.location != 0)
+                    .map(item => item.location)
                 
                 // no victory possible if three pieces haven't been played
                 if(piecesInPlay.length < 3) {
@@ -74,8 +74,29 @@
                 }
             }
 
+            // Logic for computer turn
+            const findWinningMove = (piece) => {
+                //
+            }
+
+            const blockWinningMove = (piece) => {
+                //
+            }
+
+            const findEmptyLocations = () => {
+                //
+            }
+
+            const makeRandomMove = () => {
+                //
+            }
+
+            const placePiece = (piece, location) => {
+                // possible unneccesary
+            }
+
             return {
-                getList,
+                getLocation,
                 startDrag,
                 onDrop,
             }
@@ -87,7 +108,7 @@
     <div class="piece-container">
         <h1>Grab your piece here</h1>
         <div 
-            v-for="item in getList(0)" 
+            v-for="item in getLocation(0)" 
             :key="item.id" 
             class="drag-el"
             draggable="true"
@@ -105,7 +126,7 @@
                 @dragover.prevent
             >
                 <div 
-                    v-for="item in getList(n)" 
+                    v-for="item in getLocation(n)" 
                     :key="item.id" 
                     class="drag-el"
                     draggable="false"
