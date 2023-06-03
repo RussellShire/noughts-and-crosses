@@ -8,6 +8,8 @@
                 { id: 1, title: 'O', location: 0 },
             ])
 
+            const victoryConditions= [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
+
             const getLocation = (location) => {
                 return items.value.filter((item) => item.location == location)
             }
@@ -38,18 +40,16 @@
                 let newItem = {...item}
                 // changing id on duplicated item
                 newItem.id = items.value.length
-                // pushing duplicated into items
+                // pushing duplicated item into items
                 items.value.push(newItem)
                 
-                // changing the location dragged item belongs to
-                item.location = location
+                // changing the location new item belongs to
+                newItem.location = location
 
                 checkVictory(item.title)
             }
 
             const checkVictory = ( currentTurnPiece ) => {
-                const victoryConditions= [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
-
                 // create an array of the squares where the piece in play sits
                 const piecesInPlay = items.value
                     .filter(item => item.title == currentTurnPiece && item.location != 0)
