@@ -13,8 +13,6 @@
             }
 
             const startDrag = (event, item) => {
-                // console.log(item)
-
                 // specify we are moving, not duplicating an item
                 event.dataTransfer.dropEffect = 'copy'
                 event.dataTransfer.effectAllowed = 'copy'
@@ -26,7 +24,7 @@
             const onDrop = (event, list) => {
                 // check if list already has content and return if so
                 if (items.value.find((item) => item.list == list)) {
-                    console.log('there is already a piece here')
+                    alert('there is already a piece here')
                     return
                 }
                 
@@ -50,24 +48,30 @@
             }
 
             const checkVictory = (piece) => {
-                // console.log("Check Victory: ", piece)
-                // console.log(items.value)
-                const piecesInPlay = items.value.filter(item => item.title == piece && item.list != 0).map(item => item.list)
-                console.log(piecesInPlay)
-                const victoryConditions= [
-                    [1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7],
-                ]
+                const victoryConditions= [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
 
-                victoryConditions.forEach(victoryCondition => {
-                    const victory = piecesInPlay.includes(victoryCondition[0] && victoryCondition[1] && victoryCondition[2])
+                // create an array of the squares where the piece in play sits
+                const piecesInPlay = items.value
+                    .filter(item => item.title == piece && item.list != 0)
+                    .map(item => item.list)
+                
+                // no victory possible if three pieces haven't been played
+                if(piecesInPlay.length < 3) {
+                    return
+                }
 
+                // check if all three positions of each victory condition appears in the array of pieces in play
+                for (let i = 0; i < victoryConditions.length; i++) {
+                    const victoryCondition = victoryConditions[i]
+
+                    const victory = piecesInPlay.includes(victoryCondition[0]) && piecesInPlay.includes(victoryCondition[1]) && piecesInPlay.includes(victoryCondition[2])
+                
                     if (victory) {
-                        console.log("win")
-                        console.log("Victory condition: ", victoryCondition)
-                    } else {
-                        console.log("keep playing")
+                        // victoryCondition can be used to highlight a win
+                        console.log(victoryCondition)
+                        return
                     }
-                })
+                }
             }
 
             return {
@@ -110,15 +114,12 @@
                 </div>
             </div>
         </div>
-        
     </div>
-    
 </template>
 
 <style>
 .piece-container {
-    /* background-color: aquamarine; */
-    border: solid;
+    border: solid yellow;
     margin-bottom: 2rem;
 }
 
@@ -130,20 +131,17 @@
 }
 
 .grid-square {
-    /* width: 50%; */
     border: solid;
     background-color: lightblue;
-    /* padding: 100px; */
     min-height: 50px;
     min-width: 50px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     grid-area: square;
 }
 
-.drag-el{
-    /* background-color: #3498db; */
-    /* color: white; */
-    padding: 5px;
+/* .drag-el{
 
-}
+} */
 </style>
