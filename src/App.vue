@@ -47,6 +47,7 @@
                 newItem.location = location
 
                 checkVictory(item.title)
+                console.log(findWinningMove(item.title))
             }
 
             const checkVictory = ( currentTurnPiece ) => {
@@ -75,11 +76,60 @@
             }
 
             // Logic for computer turn
-            const findWinningMove = (piece) => {
-                //
+            const findWinningMove = (currentTurnPiece) => {
+                const piecesInPlay = items.value
+                    .filter(item => item.title == currentTurnPiece && item.location != 0)
+                    .map(item => item.location)
+                
+                let winningMove = []
+                
+                // check each possible victory condition array
+                for (let i = 0; i < victoryConditions.length; i++) {
+                    const victoryCondition = victoryConditions[i]
+                    
+                    let inPosition = 0
+                    let uncertainPosition = ''
+                    
+                    // loop over victory array
+                    for (let ii = 0; ii < victoryCondition.length; ii++) {
+                        
+                        // if a player piece is in a victory position record +1
+                        if(piecesInPlay.includes(victoryCondition[ii])){
+                            inPosition += 1
+                        }
+
+                        // if a victory position doesn't include a player piece record the position
+                        if(!piecesInPlay.includes(victoryCondition[ii])) {
+                            uncertainPosition = victoryCondition[ii]
+                        }
+                    }
+
+                    // BELOW HERE NOT WORKING
+                    // if two player pieces are in position check what is in the third spot
+                    if(inPosition == 2) {
+                        for (let iii = 0; iii < items.value.length; iii++) {
+                            const item = items.value[iii]
+
+                            if(item['location'] == uncertainPosition && item['title'] != currentTurnPiece) {
+                                continue
+                            } else {
+                                winningMove.push(uncertainPosition)
+                            }
+                        }
+                    }
+                }
+                return winningMove
             }
 
             const blockWinningMove = (piece) => {
+                let opponentPiece = ''
+                
+                if (piece == 'X') {
+                    opponentPiece = 'O'
+                } else {
+                    opponentPiece = 'X'
+                }
+
                 //
             }
 
