@@ -95,22 +95,35 @@
                         }
                     })
 
-                    let possibleWinningRow = []
+                    let possibleWinningRow = ''
                     
                     if (piecesInPosition.length === 2) {
-                        possibleWinningRow.push(victoryCondition)    
+                        possibleWinningRow = victoryCondition    
                     } else {
                         continue
                     }
 
                     let contestedPosition = ''
 
-                    possibleWinningRows.map(position => {
+                    console.log('Possible winning row: ', possibleWinningRow)
+
+                    possibleWinningRow.forEach(position => {
                         if(position != piecesInPosition[0] && position != piecesInPosition[1]) {
+                            console.log('Position: ', position)
                             contestedPosition = position
                         }
                     })
+
+                    console.log("Contested positon: ", contestedPosition)
+
+                    items.value.map(item => {
+                        // Here is incorrect, returning every time it's wrong creating multiples. Needs different logic
+                        if(item.location != contestedPosition) {
+                            winningMove.push(contestedPosition)
+                        }
+                    })
                 }
+                console.log(winningMove)
             }
 
             const blockWinningMove = (piece) => {
