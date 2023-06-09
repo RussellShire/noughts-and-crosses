@@ -47,7 +47,7 @@
                 newItem.location = location
 
                 checkVictory(item.title)
-                console.log(findWinningMove(item.title))
+                findWinningMove(item.title)
             }
 
             const checkVictory = ( currentTurnPiece ) => {
@@ -69,7 +69,7 @@
                 
                     if (victory) {
                         // victoryCondition can be used to highlight a win
-                        console.log(victoryCondition)
+                        console.log('Victory! ', victoryCondition)
                         return
                     }
                 }
@@ -80,45 +80,77 @@
                 const piecesInPlay = items.value
                     .filter(item => item.title == currentTurnPiece && item.location != 0)
                     .map(item => item.location)
+                console.log('Pieces in play: ', piecesInPlay)
                 
                 let winningMove = []
-                
-                // check each possible victory condition array
+
                 for (let i = 0; i < victoryConditions.length; i++) {
                     const victoryCondition = victoryConditions[i]
                     
-                    let inPosition = 0
-                    let uncertainPosition = ''
-                    
-                    // loop over victory array
-                    for (let ii = 0; ii < victoryCondition.length; ii++) {
-                        
-                        // if a player piece is in a victory position record +1
-                        if(piecesInPlay.includes(victoryCondition[ii])){
-                            inPosition += 1
+                    console.log(piecesInPlay.filter(piece => {
+                        if(piece === victoryCondition[0] || piece === victoryCondition[1] || piece === victoryCondition[2]) {
+                            return true
+                        } else {
+                            return false
                         }
-
-                        // if a victory position doesn't include a player piece record the position
-                        if(!piecesInPlay.includes(victoryCondition[ii])) {
-                            uncertainPosition = victoryCondition[ii]
-                        }
-                    }
-
-                    // BELOW HERE NOT WORKING
-                    // if two player pieces are in position check what is in the third spot
-                    if(inPosition == 2) {
-                        for (let iii = 0; iii < items.value.length; iii++) {
-                            const item = items.value[iii]
-
-                            if(item['location'] == uncertainPosition && item['title'] != currentTurnPiece) {
-                                continue
-                            } else {
-                                winningMove.push(uncertainPosition)
-                            }
-                        }
-                    }
+                    })
+                    )
                 }
-                return winningMove
+ 
+//                 users= users.filter(function(item) {
+//                      for (var key in filter) {
+//                      if (item[key] === undefined || item[key] != filter[key])
+//                          return false;
+//                      }
+//                  return true;
+//                  });
+
+                
+
+                // // check each possible victory condition array
+                // for (let i = 0; i < victoryConditions.length; i++) {
+                //     const victoryCondition = victoryConditions[i]
+                    
+                //     let inPosition = 0
+                //     let uncertainPosition = ''
+                    
+                //     // loop over victory array
+                //     for (let ii = 0; ii < victoryCondition.length; ii++) {
+                        
+                //         // if a player piece is in a victory position record +1
+                //         if(piecesInPlay.includes(victoryCondition[ii])){
+                //             inPosition += 1
+                //         }
+
+                //         // if a victory position doesn't include a player piece record the position
+                //         if(!piecesInPlay.includes(victoryCondition[ii])) {
+                //             uncertainPosition = victoryCondition[ii]
+                //         }
+                //     }
+
+                //     // BELOW HERE NOT WORKING
+                //     // if two player pieces are in position check what is in the third spot
+                //     if(inPosition == 2) {
+                //         console.log('Uncertain position: ', uncertainPosition)
+                        
+
+                //         for (let iii = 0; iii < items.value.length; iii++) {
+                //             const item = items.value[iii]
+                //             console.log("Item: ", item)
+                //             if(item['location'] == uncertainPosition) {
+                //                 uncertainPosition = ''
+                //                 //
+                //             } else {
+                //                 console.log(victoryCondition)
+                //                 winningMove.push(uncertainPosition)
+                //                 break
+                //             }
+                //         }
+                //         uncertainPosition = ''
+                //     }
+                // }
+                // console.log("Winning move(s): ", winningMove)
+                // return winningMove
             }
 
             const blockWinningMove = (piece) => {
