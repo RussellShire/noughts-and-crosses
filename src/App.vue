@@ -81,13 +81,12 @@
                     .filter(item => item.title == currentTurnPiece && item.location != 0)
                     .map(item => item.location)
                 
-                const winningMove = []
-                let piecesInPosition = []
+                let winningMove = []
 
                 for (let i = 0; i < victoryConditions.length; i++) {
                     const victoryCondition = victoryConditions[i]
                     
-                    piecesInPosition = piecesInPlay.filter(piece => {
+                    const piecesInPosition = piecesInPlay.filter(piece => {
                         if(piece === victoryCondition[0] || piece === victoryCondition[1] || piece === victoryCondition[2]) {
                             return true
                         } else {
@@ -105,25 +104,27 @@
 
                     let contestedPosition = ''
 
-                    console.log('Possible winning row: ', possibleWinningRow)
+                    // console.log('Possible winning row: ', possibleWinningRow)
 
                     possibleWinningRow.forEach(position => {
                         if(position != piecesInPosition[0] && position != piecesInPosition[1]) {
-                            console.log('Position: ', position)
                             contestedPosition = position
                         }
                     })
 
-                    console.log("Contested positon: ", contestedPosition)
+                    // console.log("Contested positon: ", contestedPosition)
 
-                    items.value.map(item => {
-                        // Here is incorrect, returning every time it's wrong creating multiples. Needs different logic
-                        if(item.location != contestedPosition) {
-                            winningMove.push(contestedPosition)
+                    let blockingPiece = items.value.filter(item => {
+                        if(item.location === contestedPosition) {
+                            return true
                         }
                     })
+
+                    if (blockingPiece.length === 0){
+                        winningMove.push(contestedPosition)
+                    }   
                 }
-                console.log(winningMove)
+                console.log('WinningMove: ', winningMove)
             }
 
             const blockWinningMove = (piece) => {
