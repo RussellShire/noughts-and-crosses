@@ -47,7 +47,8 @@
                 newItem.location = location
 
                 checkVictory(item.title)
-                findWinningMove(item.title)
+                findWinningMoves(item.title)
+                findEmptyLocations()
             }
 
             const checkVictory = ( currentTurnPiece ) => {
@@ -76,16 +77,18 @@
             }
 
             // Logic for computer turn
-            const findWinningMove = (currentTurnPiece) => {
+            const findWinningMoves = (currentTurnPiece) => {
                 const piecesInPlay = items.value
                     .filter(item => item.title == currentTurnPiece && item.location != 0)
                     .map(item => item.location)
                 
-                let winningMove = []
+                let winningMoves = []
 
+                // Loop over each victory condition
                 for (let i = 0; i < victoryConditions.length; i++) {
                     const victoryCondition = victoryConditions[i]
                     
+                    // If any pieces are currently in place for that victory condition add them to an array
                     const piecesInPosition = piecesInPlay.filter(piece => {
                         if(piece === victoryCondition[0] || piece === victoryCondition[1] || piece === victoryCondition[2]) {
                             return true
@@ -96,6 +99,7 @@
 
                     let possibleWinningRow = ''
                     
+                    // If two pieces are in position, this victory condition is possible
                     if (piecesInPosition.length === 2) {
                         possibleWinningRow = victoryCondition    
                     } else {
@@ -104,27 +108,26 @@
 
                     let contestedPosition = ''
 
-                    // console.log('Possible winning row: ', possibleWinningRow)
-
+                    // Find the position where no active pieces are
                     possibleWinningRow.forEach(position => {
                         if(position != piecesInPosition[0] && position != piecesInPosition[1]) {
                             contestedPosition = position
                         }
                     })
 
-                    // console.log("Contested positon: ", contestedPosition)
-
+                    // Check the items in play to see if an opponent piece is in the contested position
                     let blockingPiece = items.value.filter(item => {
                         if(item.location === contestedPosition) {
                             return true
                         }
                     })
 
+                    // If no pieces are found, this location is a possible winning move
                     if (blockingPiece.length === 0){
-                        winningMove.push(contestedPosition)
+                        winningMoves.push(contestedPosition)
                     }   
                 }
-                console.log('WinningMove: ', winningMove)
+                return winningMoves
             }
 
             const blockWinningMove = (piece) => {
@@ -140,7 +143,13 @@
             }
 
             const findEmptyLocations = () => {
-                //
+                let emptyLocations = [1,2,3,4,5,6,7,8,9]
+
+                for(let i = 2; i < items.value.length; i++) {
+                    emptyLocations.splice(emptyLocations.indexOf(items.value[i].location), 1)
+                }
+
+                return emptyLocations
             }
 
             const makeRandomMove = () => {
@@ -149,6 +158,41 @@
 
             const placePiece = (piece, location) => {
                 // possible unneccesary
+            }
+
+            const computerTurn = (computerPiece) => {
+                // Check if you can win
+                let possibleMoves = ''
+                possibleMoves = findWinningMoves(computerPiece)
+
+                // if you can win, place a piece in a random winning position
+                if(possibleMoves.length > 0) {
+                    makeRandomMove(possibleMoves)
+                    return
+                }
+
+                // Find opponent Piece
+                let opponentPiece = ''
+                
+                if (computerPiece === 'X') {
+                    opponentPiece = 'O'
+                } else {
+                    opponentPiece = 'X'
+                }
+
+                // Check to see if opponent can win
+                possibleMoves = findWinningMoves(opponentPiece)
+
+                // If oppent can win, randomly block one winning move
+                if(possibleMoves.length > 0) {
+                    makeRandomMove(possibleMoves)
+                    return
+                }
+
+                // else make a random move
+                possibleMoves = findEmptyLocations()
+
+                makeRandomMove(possibleMoves)
             }
 
             return {
