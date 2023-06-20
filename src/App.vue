@@ -158,7 +158,9 @@
             }
 
             const makeRandomMove = (possibleMoves) => {
-                let newItem = {id: items.value.length, title: computerPiece, location: possibleMoves[0] }
+                const move = Math.floor(Math.random() * (possibleMoves.length))
+
+                let newItem = {id: items.value.length, title: computerPiece, location: possibleMoves[move]}
 
                 items.value.push(newItem)
 
