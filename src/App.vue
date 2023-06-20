@@ -8,6 +8,9 @@
                 { id: 1, title: 'O', location: 0 },
             ])
 
+            let computerPiece = ''
+            let playerPiece = ''
+
             const victoryConditions= [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
 
             const getLocation = (location) => {
@@ -36,19 +39,33 @@
                 //finding the item that matches 
                 const item = items.value.find((item) => item.id == itemID)
                 
+                // Set playerPiece and checking player is playing the correct piece
+                if (!playerPiece) { 
+                    playerPiece = item.title
+                } else if (playerPiece != item.title) {
+                    console.log('That is not your piece')
+                    return
+                }
+
                 // duplicating item
                 let newItem = {...item}
                 // changing id on duplicated item
                 newItem.id = items.value.length
                 // pushing duplicated item into items
                 items.value.push(newItem)
-                
+
                 // changing the location new item belongs to
                 newItem.location = location
 
                 checkVictory(item.title)
-                findWinningMoves(item.title)
-                findEmptyLocations()
+
+                if (item.title === 'X') {
+                    computerPiece = 'O'
+                } else {
+                    computerPiece = 'X'
+                }
+
+                computerTurn(computerPiece)
             }
 
             const checkVictory = ( currentTurnPiece ) => {
@@ -130,18 +147,6 @@
                 return winningMoves
             }
 
-            const blockWinningMove = (piece) => {
-                let opponentPiece = ''
-                
-                if (piece == 'X') {
-                    opponentPiece = 'O'
-                } else {
-                    opponentPiece = 'X'
-                }
-
-                //
-            }
-
             const findEmptyLocations = () => {
                 let emptyLocations = [1,2,3,4,5,6,7,8,9]
 
@@ -152,12 +157,12 @@
                 return emptyLocations
             }
 
-            const makeRandomMove = () => {
-                //
-            }
+            const makeRandomMove = (possibleMoves) => {
+                let newItem = {id: items.value.length, title: computerPiece, location: possibleMoves[0] }
 
-            const placePiece = (piece, location) => {
-                // possible unneccesary
+                items.value.push(newItem)
+
+                checkVictory(computerPiece)
             }
 
             const computerTurn = (computerPiece) => {
