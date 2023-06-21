@@ -8,8 +8,10 @@
                 { id: 1, title: 'O', location: 0 },
             ])
 
+            let message = ref('')
             let computerPiece = ''
             let playerPiece = ''
+            let gameover = false
 
             const victoryConditions= [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
 
@@ -24,12 +26,24 @@
 
                 // tell drag and drop API what we're moving
                 event.dataTransfer.setData('itemID', item.id)
+
+                // check for new game
+                if (gameover) {
+                    items.value = [
+                        { id: 0, title: 'X', location: 0 },
+                        { id: 1, title: 'O', location: 0 },
+                    ]
+                    computerPiece = ''
+                    playerPiece = ''
+                    message.value = 'Starting a new game'
+                    gameover = false
+                }
             }
 
             const onDrop = (event, location) => {
                 // check if location already has content and return if so
                 if (items.value.find((item) => item.location == location)) {
-                    alert('there is already a piece here')
+                    message.value = 'There is already a piece there'
                     return
                 }
                 
@@ -43,9 +57,11 @@
                 if (!playerPiece) { 
                     playerPiece = item.title
                 } else if (playerPiece != item.title) {
-                    console.log('That is not your piece')
+                    message.value = 'That is not your piece'
                     return
                 }
+
+                message.value = ''
 
                 // duplicating item
                 let newItem = {...item}
@@ -87,7 +103,13 @@
                 
                     if (victory) {
                         // victoryCondition can be used to highlight a win
-                        console.log('Victory! ', victoryCondition)
+                        // console.log('Victory! ', victoryCondition)
+                        if (computerPiece === currentTurnPiece) {
+                            message.value = 'Defeat! The computer won.'
+                        } else {
+                            message.value = 'Victory! You beat the computer.'
+                        }
+                        gameover = true
                         return
                     }
                 }
@@ -206,6 +228,7 @@
                 getLocation,
                 startDrag,
                 onDrop,
+                message
             }
         }
     }
@@ -224,6 +247,7 @@
             {{ item.title }}
         </div>
     </div>
+    <div>{{ message }}</div>
     <div class="grid-container">
         <div v-for="n in 9">
             <div
