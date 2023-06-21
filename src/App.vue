@@ -27,7 +27,7 @@
                 // tell drag and drop API what we're moving
                 event.dataTransfer.setData('itemID', item.id)
 
-                // check for new game
+                // check for new game and reset state if so
                 if (gameover) {
                     items.value = [
                         { id: 0, title: 'X', location: 0 },
@@ -111,6 +111,11 @@
                         }
                         gameover = true
                         return
+                    } else {
+                        if (items.value.length === 11) {
+                            gameover = true
+                            message.value = 'Draw!'
+                        }
                     }
                 }
             }
@@ -190,6 +195,10 @@
             }
 
             const computerTurn = (computerPiece) => {
+                if (gameover) {
+                    return
+                }
+
                 // Check if you can win
                 let possibleMoves = ''
                 possibleMoves = findWinningMoves(computerPiece)
