@@ -91,7 +91,7 @@
                     .map(item => item.location)
                 
                 // no victory possible if three pieces haven't been played
-                if(piecesInPlay.length < 3) {
+                if (piecesInPlay.length < 3) {
                     return
                 }
 
@@ -134,7 +134,7 @@
                     
                     // If any pieces are currently in place for that victory condition add them to an array
                     const piecesInPosition = piecesInPlay.filter(piece => {
-                        if(piece === victoryCondition[0] || piece === victoryCondition[1] || piece === victoryCondition[2]) {
+                        if (piece === victoryCondition[0] || piece === victoryCondition[1] || piece === victoryCondition[2]) {
                             return true
                         } else {
                             return false
@@ -154,14 +154,14 @@
 
                     // Find the position where no active pieces are
                     possibleWinningRow.forEach(position => {
-                        if(position != piecesInPosition[0] && position != piecesInPosition[1]) {
+                        if (position != piecesInPosition[0] && position != piecesInPosition[1]) {
                             contestedPosition = position
                         }
                     })
 
                     // Check the items in play to see if an opponent piece is in the contested position
                     let blockingPiece = items.value.filter(item => {
-                        if(item.location === contestedPosition) {
+                        if (item.location === contestedPosition) {
                             return true
                         }
                     })
@@ -177,7 +177,7 @@
             const findEmptyLocations = () => {
                 let emptyLocations = [1,2,3,4,5,6,7,8,9]
 
-                for(let i = 2; i < items.value.length; i++) {
+                for (let i = 2; i < items.value.length; i++) {
                     emptyLocations.splice(emptyLocations.indexOf(items.value[i].location), 1)
                 }
 
@@ -204,7 +204,7 @@
                 possibleMoves = findWinningMoves(computerPiece)
 
                 // if you can win, place a piece in a random winning position
-                if(possibleMoves.length > 0) {
+                if (possibleMoves.length > 0) {
                     makeRandomMove(possibleMoves)
                     return
                 }
@@ -222,7 +222,7 @@
                 possibleMoves = findWinningMoves(opponentPiece)
 
                 // If oppent can win, randomly block one winning move
-                if(possibleMoves.length > 0) {
+                if (possibleMoves.length > 0) {
                     makeRandomMove(possibleMoves)
                     return
                 }
@@ -256,7 +256,9 @@
             {{ item.title }}
         </div>
     </div>
-    <div>{{ message }}</div>
+    <div class="message" v-if="message">{{ message }}
+        <div>X</div>
+    </div>
     <div class="grid-container">
         <div v-for="n in 9">
             <div
@@ -300,6 +302,15 @@
     justify-content: center;
     align-items: center;
     grid-area: square;
+}
+
+.message {
+    border: solid;
+    border-radius: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    margin: auto;
 }
 
 /* .drag-el{
