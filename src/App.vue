@@ -233,10 +233,15 @@
                 makeRandomMove(possibleMoves)
             }
 
+            const closeMessageBox = () => {
+                message.value = ''
+            }
+
             return {
                 getLocation,
                 startDrag,
                 onDrop,
+                closeMessageBox,
                 message
             }
         }
@@ -278,7 +283,7 @@
             </div>
         </div>
 
-        <div v-if="message" class="message-box">
+        <div v-if="message" class="message-box" @click="closeMessageBox">
             <div class="message">{{ message }} X</div>
         </div>
 
