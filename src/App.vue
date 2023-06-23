@@ -244,58 +244,75 @@
 </script>
 
 <template>
-    <div class="piece-container">
-        <h1>Grab your piece here</h1>
-        <div 
-            v-for="item in getLocation(0)" 
-            :key="item.id" 
-            class="drag-el"
-            draggable="true"
-            @dragstart="startDrag($event, item)" 
-        >
-            {{ item.title }}
-        </div>
-    </div>
-    <div class="message" v-if="message">{{ message }}
-        <div>X</div>
-    </div>
-    <div class="grid-container">
-        <div v-for="n in 9">
-            <div
-                class="grid-square"
-                @drop="onDrop($event, n)"
-                @dragenter.prevent
-                @dragover.prevent
+    <div class="container">
+        <div class="piece-container">
+            <h1>Grab your piece here</h1>
+            <div 
+                v-for="item in getLocation(0)" 
+                :key="item.id" 
+                class="drag-el"
+                draggable="true"
+                @dragstart="startDrag($event, item)" 
             >
-                <div 
-                    v-for="item in getLocation(n)" 
-                    :key="item.id" 
-                    class="drag-el"
-                    draggable="false"
+                {{ item.title }}
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div v-for="n in 9">
+                <div
+                    class="grid-square"
+                    @drop="onDrop($event, n)"
+                    @dragenter.prevent
+                    @dragover.prevent
                 >
-                    {{ item.title }}
+                    <div 
+                        v-for="item in getLocation(n)" 
+                        :key="item.id" 
+                        class="drag-el"
+                        draggable="false"
+                    >
+                        {{ item.title }}
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div v-if="message" class="message-box">
+            <div class="message">{{ message }} X</div>
+        </div>
+
     </div>
 </template>
 
 <style>
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid pink;
+}
+
 .piece-container {
     border: solid yellow;
-    margin-bottom: 2rem;
+
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .grid-container {
+    /* border: solid red; */
+
     display: grid;
     grid-template-columns: repeat(3, 50px);
     grid-template-rows: repeat(3, 50px);
-    border: solid red;
 }
 
 .grid-square {
     border: solid;
-    background-color: lightblue;
+    /* background-color: lightblue; */
     min-height: 50px;
     min-width: 50px;
     display: flex;
@@ -304,13 +321,17 @@
     grid-area: square;
 }
 
+.message-box {
+    display: flex;
+    margin: 1rem;
+}
+
 .message {
+    margin: auto;
     border: solid;
     border-radius: 0.5rem;
-    display: flex;
     gap: 0.5rem;
     padding: 0.5rem;
-    margin: auto;
 }
 
 /* .drag-el{
